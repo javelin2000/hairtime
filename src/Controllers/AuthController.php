@@ -9,11 +9,12 @@
 namespace App\Controllers;
 
 use App\Models\Customer;
-use Respect\Validation\Validator as v;
+use App\Models\User;
 use App\Models\Salon;
 use App\Models\Worker;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Respect\Validation\Validator as v;
 
 class AuthController extends BaseController
 {
@@ -21,7 +22,6 @@ class AuthController extends BaseController
     {
         $validation = $this->validator;
         $validation->validate($req, array(
-            //TODO: custom rule for database cheacking
             'email' => v::notEmpty()->email()->length(5, 255)->emailUsed(),
             'first_name' => v::noWhitespace()->notEmpty()->length(1, 100),
             'last_name' => v::noWhitespace()->notEmpty()->length(1, 100),
@@ -46,7 +46,6 @@ class AuthController extends BaseController
     {
         $validation = $this->validator;
         $validation->validate($req, array(
-            //TODO: custom rule for database cheacking
             'email' => v::notEmpty()->email()->length(5, 255)->emailUsed(),
             'first_name' => v::notEmpty()->noWhitespace()->length(1, 100),
             'last_name' => v::notEmpty()->noWhitespace()->length(1, 100),
@@ -80,9 +79,32 @@ class AuthController extends BaseController
         return $res->withStatus(201);
     }
 
+    function singin(Request $req, Response $res){
+        $validation = $this->validator;
+        $validation->validate($req, array(
+            'email' => v::notEmpty()->email()->length(5, 255),
+            'password' => v::notEmpty()->length(1, 50) //TODO: turn off debug mode
+        ));
+        if($validation->failed())
+            return $res->withJson($validation->errors)->withStatus(400);
+
+        $user = User::where('email', $req->getParam('email'))->first();
+        if($user->password !== $req->getParam('password'))
+            return $res->withStatus(400)
+                       ->withJson(['error' => 'Wrong password']) ;
+        else {
+            $token = $this->makeToken();
+            $user->tokens()->create(['token' => $token]);
+            return $res = $res->withHeader('User ID', $user->user_id)
+                              ->withHeader('Token', $token);
+        }
+    }
+
     protected function makeToken(){
         return sha1(random_bytes(40));
     }
+
+
 }
 
 
