@@ -9,6 +9,7 @@
 namespace App\Controllers;
 
 use App\Models\Customer;
+use App\Models\Key;
 use App\Models\Salon;
 use App\Models\Token;
 use App\Models\User;
@@ -58,10 +59,13 @@ class AuthController extends BaseController
             'lng' => v::floatType(), //TODO: regex validator
             'password' => v::notEmpty()->length(1, 50), //TODO: turn off debug mode
             'phone' => v::phone(),
-            'logo' =>v::optional(v::url()->length(1,100))
+            'logo' => v::optional(v::url()->length(1, 100)),
+            'activation_key' => v::notEmpty()->length(1, 100)->keyExists()
         ));
         if($validation->failed())
             return $res->withJson($validation->errors)->withStatus(400);
+
+        Key::where('key_body', $req->getParam('activation_key'))->first()->delete();
 
         $token = $this->makeToken();
 
