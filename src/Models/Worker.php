@@ -9,6 +9,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Worker
+ * @package App\Models
+ * @method static Worker find(integer $id)
+ * @method static Worker where($column, $condition, $special = null)
+ * @method static Worker first()
+ */
 class Worker extends Model {
     public $timestamps = false;
     protected $table = 'workers';

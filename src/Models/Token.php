@@ -9,6 +9,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Token
+ * @package App\Models
+ * @method static Token find(integer $id)
+ * @method static Token findOrFail(integer $id)
+ * @method static Token where($column, $condition, $special = null)
+ * @method static Token first()
+ * @method static Token firstOrFail()
+ */
 class Token extends Model{
     public $timestamps = false;
     protected $primaryKey = 'token_id';

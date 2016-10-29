@@ -14,8 +14,12 @@ use Illuminate\Database\Eloquent\Model;
  * Class User
  * @package App\Models
  * @method static User find(integer $id)
+ * @method static User findOrFail(integer $id)
+ * @method static User where($column, $condition, $special = null)
+ * @method static User first()
  */
-class User extends Model {
+class User extends Model
+{
     public $timestamps = false;
     protected $table = 'users';
     protected $primaryKey = 'user_id';
@@ -24,11 +28,18 @@ class User extends Model {
         'password',
     ];
 
-    function entry(){
+    function entry()
+    {
         return $this->morphTo();
     }
-    
-    function tokens(){
+
+    function getEntry()
+    {
+        return $this->entry()->get()->first();
+    }
+
+    function tokens()
+    {
         return $this->hasMany('App\Models\Token');
     }
 }

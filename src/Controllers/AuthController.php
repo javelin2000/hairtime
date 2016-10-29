@@ -9,12 +9,13 @@
 namespace App\Controllers;
 
 use App\Models\Customer;
-use App\Models\User;
 use App\Models\Salon;
+use App\Models\Token;
+use App\Models\User;
 use App\Models\Worker;
+use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Respect\Validation\Validator as v;
 
 class AuthController extends BaseController
 {
@@ -37,9 +38,9 @@ class AuthController extends BaseController
         $customer = Customer::create($req->getParams());
         $user = $customer->user()->create($req->getParams());
         $user->tokens()->create(['token' => $token]);
-        $res = $res->withHeader('User ID', $user->user_id)
-                   ->withHeader('Token', $token);
-        return $res->withStatus(201);
+        return $res->withHeader('User-ID', $user->user_id)
+            ->withHeader('Token', $token)
+            ->withStatus(201);
     }
 
     function singupSalon(Request $req, Response $res)
@@ -54,7 +55,7 @@ class AuthController extends BaseController
             'city' => v::alpha()->length(1, 255),
             'address' => v::notEmpty()->length(1, 255),
             'lat' => v::floatType(),
-            'lng' => v::floatType(),
+            'lng' => v::floatType(), //TODO: regex validator
             'password' => v::notEmpty()->length(1, 50), //TODO: turn off debug mode
             'phone' => v::phone(),
             'logo' =>v::optional(v::url()->length(1,100))
@@ -67,9 +68,9 @@ class AuthController extends BaseController
         $salon = Salon::create($req->getParams());
         $user = $salon->user()->create($req->getParams());
         $user->tokens()->create(['token' => $token]);
-        $res = $res->withHeader('User ID', $user->user_id)
-                   ->withHeader('Token', $token);
-        return $res->withStatus(201);
+        return $res->withHeader('User-ID', $user->user_id)
+            ->withHeader('Token', $token)
+            ->withStatus(201);
     }
 
     function singupWorker(Request $req, Response $res)
@@ -95,10 +96,22 @@ class AuthController extends BaseController
         else {
             $token = $this->makeToken();
             $user->tokens()->create(['token' => $token]);
-            return $res = $res->withHeader('User ID', $user->user_id)
-                              ->withHeader('Token', $token);
+            $res = $res->withHeader('User-ID', $user->user_id)
+                ->withHeader('Token', $token)
+                ->withHeader('Type', explode('\\', get_class($user->getEntry()))[2])//TODO: tell what kind of user
+                ->withJson($user->getEntry()->toArray());
+            return $res;
         }
     }
+
+    function singout(Request $req, Response $res)
+    {
+        $id = $req->getHeader('User-ID')[0];
+        $token = $req->getHeader('Token')[0];
+        Token::where('token', $token)->where('user_id', $id)->delete();
+        return $res;
+    }
+
 
     protected function makeToken(){
         return sha1(random_bytes(40));

@@ -9,6 +9,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Customer
+ * @package App\Models
+ * @method static Customer find(integer $id)
+ * @method static Customer where($column, $condition, $special = null)
+ * @method static Customer first()
+ */
 class Customer extends Model {
     public $timestamps = false;
     protected $table = 'customers';
@@ -17,6 +24,10 @@ class Customer extends Model {
         'first_name',
         'last_name',
         'phone',
+    ];
+
+    protected $hidden = [
+        'customer_id'
     ];
 
     public function user(){

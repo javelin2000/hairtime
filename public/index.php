@@ -13,7 +13,7 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 $config = require_once __DIR__ . '/../src/config.php';
 
 
@@ -21,8 +21,6 @@ $app = new \Slim\App($config);
 
 
 require __DIR__ . '/../src/dependencies.php';
-
-require __DIR__ . '/../src/middleware.php';
 
 require __DIR__ . '/../src/routes.php';
 
