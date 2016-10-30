@@ -8,6 +8,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -15,7 +16,11 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Models
  * @method static Salon find(integer $id)
  * @method static Salon where($column, $condition, $special = null)
+ * @method static Salon having($column, $condition, $special = null)
  * @method static Salon first()
+ * @method static Salon select($statement)
+ * @method static Salon selectRaw($statement)
+ * @method static Collection get()
  */
 class Salon extends Model {
     public $timestamps = false;
@@ -37,7 +42,24 @@ class Salon extends Model {
         'salon_id',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public function user(){
         return $this->morphOne('App\Models\User', 'entry');
     }
+
+    /**
+     * @param float $lat
+     * @param float $lng
+     * @param integer $radius
+     * @return Collection
+     */
+    public static function near($lat, $lng, $radius)
+    {
+        $formula = "(6371*acos(cos(radians({$lat}))*cos(radians(`lat`))*cos(radians(`lng`)-radians({$lng}))+sin(radians({$lat}))*sin(radians(`lat`)))) AS distance";
+        $radius = ($radius + $radius * 0.1) / 1000;
+        return static::selectRaw('*, ' . $formula)->having('distance', '<', $radius)->get();
+    }
+
 }

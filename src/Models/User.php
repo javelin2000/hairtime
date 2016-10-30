@@ -42,4 +42,9 @@ class User extends Model
     {
         return $this->hasMany('App\Models\Token');
     }
+
+    static function changePassword($user_id, $password)
+    {
+        User::where('user_id', $user_id)->update(['password' => $password]);
+    }
 }

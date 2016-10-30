@@ -29,9 +29,9 @@ class AuthController extends BaseController
             'last_name' => v::noWhitespace()->notEmpty()->length(1, 100),
             'password' => v::notEmpty()->length(1, 50), //TODO: turn off debug mode
             'phone' => v::phone(),
-            'logo' =>v::optional(v::url()->length(1,100))
+            'logo' => v::optional(v::url()->length(1, 100))
         ));
-        if($validation->failed())
+        if ($validation->failed())
             return $res->withJson($validation->errors)->withStatus(400);
 
         $token = $this->makeToken();
@@ -62,7 +62,7 @@ class AuthController extends BaseController
             'logo' => v::optional(v::url()->length(1, 100)),
             'activation_key' => v::notEmpty()->length(1, 100)->keyExists()
         ));
-        if($validation->failed())
+        if ($validation->failed())
             return $res->withJson($validation->errors)->withStatus(400);
 
         Key::where('key_body', $req->getParam('activation_key'))->first()->delete();
@@ -84,19 +84,21 @@ class AuthController extends BaseController
         return $res->withStatus(201);
     }
 
-    function singin(Request $req, Response $res){
+    function singin(Request $req, Response $res)
+    {
         $validation = $this->validator;
         $validation->validate($req, array(
             'email' => v::notEmpty()->email()->length(5, 255),
             'password' => v::notEmpty()->length(1, 50) //TODO: turn off debug mode
         ));
-        if($validation->failed())
+        if ($validation->failed())
             return $res->withJson($validation->errors)->withStatus(400);
 
         $user = User::where('email', $req->getParam('email'))->first();
-        if($user->password !== $req->getParam('password'))
+
+        if ($user->password !== $req->getParam('password'))
             return $res->withStatus(400)
-                       ->withJson(['error' => 'Wrong password']) ;
+                ->withJson(['error' => 'Wrong password']);
         else {
             $token = $this->makeToken();
             $user->tokens()->create(['token' => $token]);
@@ -112,12 +114,29 @@ class AuthController extends BaseController
     {
         $id = $req->getHeader('User-ID')[0];
         $token = $req->getHeader('Token')[0];
-        Token::where('token', $token)->where('user_id', $id)->delete();
+        Token::deleteOne($id, $token);
+        return $res;
+    }
+
+    function newPassword(Request $req, Response $res)
+    {
+        $validation = $this->validator;
+        $validation->validate($req, array(
+            'password' => v::notEmpty()->length(1, 50) //TODO: turn off debug mode
+        ));
+        if ($validation->failed())
+            return $res->withJson($validation->errors)->withStatus(400);
+
+        $id = $req->getHeader('User-ID');
+        Token::deleteAll($id);
+        User::changePassword($id, $req->getParam('password'));
+
         return $res;
     }
 
 
-    protected function makeToken(){
+    protected function makeToken()
+    {
         return sha1(random_bytes(40));
     }
 

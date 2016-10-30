@@ -10,11 +10,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Salon
+ * Class Key
  * @package App\Models
- * @method static Salon find(integer $id)
- * @method static Salon where($column, $condition, $special = null)
- * @method static Salon first()
+ * @method static Key find(integer $id)
+ * @method static Key where($column, $condition, $special = null)
+ * @method static Key first()
  */
 class Key extends Model
 {

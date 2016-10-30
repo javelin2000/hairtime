@@ -29,4 +29,15 @@ class Token extends Model{
     function user(){
         return $this->belongsTo('App\Models\User');
     }
+
+    static function deleteAll($user_id)
+    {
+        static::where('user_id', $user_id)->delete();
+    }
+
+    static function deleteOne($user_id, $token)
+    {
+        static::where('token', $token)->where('user_id', $user_id)->delete();
+    }
+
 }

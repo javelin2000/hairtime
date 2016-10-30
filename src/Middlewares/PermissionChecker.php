@@ -32,7 +32,6 @@ class PermissionChecker
         $id = $req->getHeader('User-ID');
         $user = User::find($id)->first();
         $role_name = 'App\Models\\' . ucfirst($this->role);
-        print_r($user->entry_type);
         if ($role_name !== $user->entry_type)
             return $res->withStatus(403);
         return $next($req, $res);
