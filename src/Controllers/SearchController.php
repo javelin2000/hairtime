@@ -17,8 +17,9 @@ class SearchController extends BaseController
 
     function freeSearch(Request $req, Response $res)
     {
-
-        return $res;
+        $city = strtolower($req->getAttribute('city'));
+        $list = Salon::where('city', 'like', '%' . $city . '%')->get();
+        return $res->withJson($list);
     }
 
     function aroundSearch(Request $req, Response $res)

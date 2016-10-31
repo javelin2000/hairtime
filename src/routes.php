@@ -29,6 +29,6 @@ $app->group('/auth', function () {
 $app->group('/customer', function () {
     $this->group('/search', function () {
         $this->get('/{lat:[-]?[0-9]{1,3}\,[0-9]{6}}/{lng:[-]?[0-9]{1,3}\,[0-9]{6}}/{radius:[0-9]{2,5}}', 'App\Controllers\SearchController:aroundSearch');
-        $this->get('/{city}', 'App\Controllers\SearchController:freeSearch');
+        $this->get('/{city:[a-zA-Z][a-zA-Z\s]*}', 'App\Controllers\SearchController:freeSearch');
     });
 })->add(new AuthChecker())->add(new PermissionChecker('customer'));
