@@ -58,6 +58,14 @@ class Salon extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ratings()
+    {
+        return $this->hasMany('App\Models\Rating');
+    }
+
+    /**
      * @return Collection
      */
     public function commentsWithCustomerInfo()

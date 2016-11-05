@@ -27,8 +27,7 @@ class CommentController extends BaseController
         if ($validation->failed())
             return $res->withJson($validation->errors)->withStatus(400);
 
-        $user_id = $req->getHeader('User-ID')[0];
-        $customer_id = User::find($user_id)->getEntry()->customer_id;
+        $customer_id = $this->getCustomerId($req);
         $salon_id = $args['salon_id'];
         $comment = new Comment();
         $comment->salon_id = $salon_id;
@@ -53,7 +52,7 @@ class CommentController extends BaseController
         if ($validation->failed())
             return $res->withJson($validation->errors)->withStatus(400);
 
-        $user_id = $req->getHeader('User-ID')[0];
+        $user_id = $this->gerUserId($req);
         $comment = Comment::getUserComment($args['comment_id'], $user_id);
         if (!$comment)
             return $res->withStatus(404);
@@ -64,12 +63,22 @@ class CommentController extends BaseController
 
     function delete(Request $req, Response $res, $args)
     {
-        $user_id = $req->getHeader('User-ID')[0];
+        $user_id = $this->gerUserId($req);
         $comment = Comment::getUserComment($args['comment_id'], $user_id);
         if (!$comment)
             return $res->withStatus(404);
         $comment->delete();
         return $res->withStatus(200);
+    }
+
+    protected function getCustomerId(Request $req)
+    {
+        return User::find($this->gerUserId($req))->getEntry()->customer_id;
+    }
+
+    protected function gerUserId(Request $req)
+    {
+        return $req->getHeader('User-ID')[0];
     }
 
 }

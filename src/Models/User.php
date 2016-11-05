@@ -38,6 +38,11 @@ class User extends Model
         return $this->hasMany('App\Models\Comment');
     }
 
+    public function ratings()
+    {
+        return $this->hasMany('App\Models\Rating');
+    }
+
     public function getEntry()
     {
         return $this->entry()->get()[0];

@@ -39,5 +39,9 @@ $app->group('/salon', function () {
             $this->put('/{comment_id:[0-9]*}', 'App\Controllers\CommentController:edit');
             $this->delete('/{comment_id:[0-9]*}', 'App\Controllers\CommentController:delete');
         });
+        $this->group('/rating', function () {
+            $this->post('', 'App\Controllers\RatingController:new');
+            $this->get('', 'App\Controllers\RatingController:get');
+        });
     })->add(new SalonChecker());
 })->add(new AuthChecker())->add(new PermissionChecker('customer'));
