@@ -8,6 +8,7 @@
 
 use App\Middlewares\AuthChecker;
 use App\Middlewares\PermissionChecker;
+use App\Middlewares\SalonChecker;
 
 
 
@@ -26,9 +27,17 @@ $app->group('/auth', function () {
     $this->post('/newPassword', 'App\Controllers\AuthController:newPassword')->add(new AuthChecker());
 });
 
-$app->group('/customer', function () {
+$app->group('/salon', function () {
     $this->group('/search', function () {
         $this->get('/{lat:[-]?[0-9]{1,3}\,[0-9]{6}}/{lng:[-]?[0-9]{1,3}\,[0-9]{6}}/{radius:[0-9]{2,5}}', 'App\Controllers\SearchController:aroundSearch');
         $this->get('/{city:[a-zA-Z][a-zA-Z\s]*}', 'App\Controllers\SearchController:freeSearch');
     });
+    $this->group('/{salon_id:[0-9]*}', function () {
+        $this->group('/comments', function () {
+            $this->post('', 'App\Controllers\CommentController:new');
+            $this->get('', 'App\Controllers\CommentController:get');
+            $this->put('/{comment_id:[0-9]*}', 'App\Controllers\CommentController:edit');
+            $this->delete('/{comment_id:[0-9]*}', 'App\Controllers\CommentController:delete');
+        });
+    })->add(new SalonChecker());
 })->add(new AuthChecker())->add(new PermissionChecker('customer'));

@@ -7,6 +7,7 @@
  */
 return [
     'settings' => [
+        'determineRouteBeforeAppMiddleware' => true,
         'displayErrorDetails' => true,
         'addContentLengthHeader' => false,
         'db' => [

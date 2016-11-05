@@ -29,8 +29,8 @@ class PermissionChecker
 
     function __invoke(Request $req, Response $res, $next)
     {
-        $id = $req->getHeader('User-ID');
-        $user = User::find($id)->first();
+        $id = $req->getHeader('User-ID')[0];
+        $user = User::find($id);
         $role_name = 'App\Models\\' . ucfirst($this->role);
         if ($role_name !== $user->entry_type)
             return $res->withStatus(403);

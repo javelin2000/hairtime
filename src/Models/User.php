@@ -28,22 +28,27 @@ class User extends Model
         'password',
     ];
 
-    function entry()
+    public function entry()
     {
         return $this->morphTo();
     }
 
-    function getEntry()
+    public function comments()
     {
-        return $this->entry()->get()->first();
+        return $this->hasMany('App\Models\Comment');
     }
 
-    function tokens()
+    public function getEntry()
+    {
+        return $this->entry()->get()[0];
+    }
+
+    public function tokens()
     {
         return $this->hasMany('App\Models\Token');
     }
 
-    static function changePassword($user_id, $password)
+    public static function changePassword($user_id, $password)
     {
         User::where('user_id', $user_id)->update(['password' => $password]);
     }

@@ -15,7 +15,8 @@ class HomeController extends BaseController
 {
     function __invoke(Request $req, Response $res, $args)
     {
-        phpinfo();
+//        phpinfo();
+        echo "<h1>Hello</h1>";
         return $res;
     }
 }

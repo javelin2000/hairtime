@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Salon
  * @package App\Models
  * @method static Salon find(integer $id)
+ * @method static Salon findOrFail(integer $id)
  * @method static Salon where($column, $condition, $special = null)
  * @method static Salon having($column, $condition, $special = null)
  * @method static Salon first()
@@ -22,7 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Salon selectRaw($statement)
  * @method static Collection get()
  */
-class Salon extends Model {
+class Salon extends Model
+{
     public $timestamps = false;
     protected $table = 'salons';
     protected $primaryKey = 'salon_id';
@@ -38,16 +40,31 @@ class Salon extends Model {
         'phone',
         'logo'
     ];
-    protected $hidden = [
-        'salon_id',
-    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
-    public function user(){
+    public function user()
+    {
         return $this->morphOne('App\Models\User', 'entry');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    /**
+     * @return Collection
+     */
+    public function commentsWithCustomerInfo()
+    {
+        return $this->comments()->join('customers', 'comments.customer_id', '=', 'customers.customer_id')->get(['comments.*', 'logo', 'first_name', 'last_name']);
+    }
+    
 
     /**
      * @param float $lat
