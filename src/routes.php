@@ -45,3 +45,4 @@ $app->group('/salon', function () {
         });
     })->add(new SalonChecker());
 })->add(new AuthChecker())->add(new PermissionChecker('customer'));
+
