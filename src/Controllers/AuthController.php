@@ -39,8 +39,7 @@ class AuthController extends BaseController
         $customer = Customer::create($req->getParams());
         $user = $customer->user()->create($req->getParams());
         $user->tokens()->create(['token' => $token]);
-        return $res->withHeader('User-ID', $user->user_id)
-            ->withHeader('Token', $token)
+        return $res->withJson(['user_id' => $user->user_id, 'token' => $token, 'type' => 'Customer'])
             ->withStatus(201);
     }
 
@@ -72,8 +71,7 @@ class AuthController extends BaseController
         $salon = Salon::create($req->getParams());
         $user = $salon->user()->create($req->getParams());
         $user->tokens()->create(['token' => $token]);
-        return $res->withHeader('User-ID', $user->user_id)
-            ->withHeader('Token', $token)
+        return $res->withJson(['user_id' => $user->user_id, 'token' => $token, 'type' => 'Salon'])
             ->withStatus(201);
     }
 
@@ -102,10 +100,8 @@ class AuthController extends BaseController
         else {
             $token = $this->makeToken();
             $user->tokens()->create(['token' => $token]);
-            $res = $res->withHeader('User-ID', $user->user_id)
-                ->withHeader('Token', $token)
-                ->withHeader('Type', explode('\\', get_class($user->getEntry()))[2])//TODO: tell what kind of user
-                ->withJson($user->getEntry()->toArray());
+            $login_data = ['user_id' => $user->user_id, 'token' => $token, 'type' => explode('\\', get_class($user->getEntry()))[2]];
+            $res = $res->withJson($user->getEntry()->toArray() + $login_data);
             return $res;
         }
     }

@@ -41,6 +41,9 @@ class Salon extends Model
         'phone',
         'logo'
     ];
+    protected $hidden = [
+        'salon_id'
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne

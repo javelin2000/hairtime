@@ -27,7 +27,8 @@ class Customer extends Model {
     ];
 
     protected $hidden = [
-        'customer_id'
+        'customer_id',
+        'created_at',
     ];
 
     public function user(){
