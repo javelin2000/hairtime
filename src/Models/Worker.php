@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Worker where($column, $condition, $special = null)
  * @method static Worker first()
  */
-class Worker extends Model {
+class Worker extends Model
+{
     public $timestamps = false;
     protected $table = 'workers';
     protected $primaryKey = 'worker_id';
@@ -25,11 +26,33 @@ class Worker extends Model {
         'last_name',
         'specialization',
         'start_year',
+        'salon_id',
         'phone',
         'logo'
     ];
 
-    public function entries(){
+    protected $hidden = [
+        'worker_id',
+        'created_at',
+    ];
+
+    public function entries()
+    {
         return $this->morphMany('App\Models\User', 'entry');
+    }
+
+    public function salon()
+    {
+        return $this->belongsTo('App\Models\Salon', 'salon_id', 'salon_id');
+    }
+
+    public function user()
+    {
+        return $this->morphOne('App\Models\User', 'entry');
+    }
+
+    public function services()
+    {
+        return $this->belongsToMany('App\Models\Service', 'server_worker');
     }
 }

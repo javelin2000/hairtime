@@ -15,7 +15,7 @@ use Slim\Http\Response;
 
 class AuthChecker
 {
-    function __invoke(Request $req, Response $res, $next)
+    public function __invoke(Request $req, Response $res, $next)
     {
         try {
             $id = $req->getHeader('User-ID')[0];

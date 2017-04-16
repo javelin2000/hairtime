@@ -12,11 +12,13 @@ use Slim\Container;
 class BaseController {
     protected $ci;
 
-    function __construct(Container $ci){
+    public function __construct(Container $ci)
+    {
         $this->ci = $ci;
     }
 
-    function __get($method){
+    public function __get($method)
+    {
         if($this->ci->{$method})
             return $this->ci->{$method};
     }

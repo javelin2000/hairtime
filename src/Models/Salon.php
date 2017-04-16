@@ -39,6 +39,7 @@ class Salon extends Model
         'lat',
         'lng',
         'phone',
+        'status',
         'logo'
     ];
     protected $hidden = [
@@ -68,6 +69,23 @@ class Salon extends Model
     {
         return $this->hasMany('App\Models\Rating');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function workers()
+    {
+        return $this->hasMany('App\Models\Worker', 'salon_id', 'salon_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function services()
+    {
+        return $this->hasMany('App\Models\Service', 'salon_id');
+    }
+
 
     /**
      * @return Collection

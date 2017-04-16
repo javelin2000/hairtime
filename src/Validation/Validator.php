@@ -8,19 +8,24 @@
 
 namespace App\Validation;
 
-use Slim\Http\Request;
 use Respect\Validation\Exceptions\NestedValidationException;
+use Slim\Http\Request;
 
 
-class Validator {
+class Validator
+{
+    use RulesList;
     public $errors;
     protected $c;
 
-    function __construct($container){
+
+    public function __construct($container)
+    {
         $this->c = $container;
     }
 
-    function validate(Request $req, array $rules){
+    public function validate(Request $req, array $rules)
+    {
         foreach ($rules as $field => $rule) {
             try {
                 $rule->setName(str_replace('_', ' ', ucfirst($field)))->assert($req->getParam($field, null));
@@ -32,7 +37,8 @@ class Validator {
     }
 
 
-    function failed(){
+    public function failed()
+    {
         return !empty($this->errors);
     }
 }

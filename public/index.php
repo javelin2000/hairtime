@@ -19,6 +19,7 @@ $config = require_once __DIR__ . '/../src/config.php';
 
 $app = new \Slim\App($config);
 
+//var_dump($app);
 
 require __DIR__ . '/../src/dependencies.php';
 

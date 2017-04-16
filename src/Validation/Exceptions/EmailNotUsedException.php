@@ -9,7 +9,7 @@ namespace App\Validation\Exceptions;
 
 use \Respect\Validation\Exceptions\ValidationException;
 
-class EmailUsedException extends ValidationException
+class EmailNotUsedException extends ValidationException
 {
     public static $defaultTemplates = [
         self::MODE_DEFAULT => [

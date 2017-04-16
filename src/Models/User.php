@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static User findOrFail(integer $id)
  * @method static User where($column, $condition, $special = null)
  * @method static User first()
+ * @method static integer count()
  */
 class User extends Model
 {
@@ -26,6 +27,7 @@ class User extends Model
     protected $fillable = [
         'email',
         'password',
+        'confirm_email',
     ];
 
     public function entry()

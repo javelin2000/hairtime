@@ -50,7 +50,8 @@ class Comment extends Model
     {
         $customer = User::find($user_id)->getEntry();
         $comment = Comment::find($comment_id);
-        if ($comment === null or $comment->customer_id !== $customer->customer_id)
+
+        if ($comment === null or $comment->customer_id != $customer->customer_id)
             return false;
         else
             return $comment;

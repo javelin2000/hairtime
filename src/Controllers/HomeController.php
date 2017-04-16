@@ -15,8 +15,10 @@ class HomeController extends BaseController
 {
     function __invoke(Request $req, Response $res, $args)
     {
-//        phpinfo();
-        echo "<h1>Hello</h1>";
-        return $res;
+
+        return $res->withJson(['message' => "Connection success", 'error' => ""])
+            ->withStatus(200);
+
+
     }
 }

@@ -19,18 +19,27 @@ class RatingController extends BaseController
 
     function new(Request $req, Response $res, $args)
     {
-        $validation = $this->validator;
-        $validation->validate($req, array(
+        /*$validation = $this->validator;
+        $validation->validate($newreq, array(
             'rating' => v::intType()->between(1, 5),
         ));
         if ($validation->failed())
-            return $res->withJson($validation->errors)->withStatus(400);
+            return $res->withJson($validation->errors)->withStatus(400);*/
+
+        if (gettype($req->getParam('rating')) == 'string') {
+            $new_rating = intval($req->getParam('rating'));
+        } else {
+            $new_rating = $req->getParam('rating');
+        }
+        if ($new_rating < 1 AND $new_rating > 5) {
+            return $res->withJson(["error" => 'rating must be more than 1 and less than 5'])->withStatus(400);
+        }
 
 
         $customer_id = $this->getCustomerId($req);
 
         $rating = Rating::where('customer_id', $customer_id)->where('salon_id', $args['salon_id'])->firstOrNew([]);
-        $rating->rating = $req->getParam('rating');
+        $rating->rating = $new_rating;
         $rating->salon_id = $args['salon_id'];
         $rating->customer_id = $customer_id;
         $rating->save();
@@ -42,10 +51,11 @@ class RatingController extends BaseController
     {
         $customer_id = $this->getCustomerId($req);
         $rating = Rating::where('customer_id', $customer_id)->where('salon_id', $args['salon_id'])->first();
+        $averaged_rate = Rating::averagedRate($req->getAttribute(['salon_id']));
         if ($rating === null)
-            return $res->withJson(['rating' => 0]);
+            return $res->withJson(['rating' => 0])->withStatus(200);
         else
-            return $res->withJson(['rating' => $rating->rating]);
+            return $res->withJson(['rating' => $rating->rating])->withStatus(200);
     }
 
 

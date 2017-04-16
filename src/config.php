@@ -15,7 +15,7 @@ return [
             'host' => 'localhost',
             'username' => 'devacc',
             'password' => 'passfordev',
-            'database' => 'hairtime',
+            'database' => 'oshrihairtime_main',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => ''

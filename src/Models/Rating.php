@@ -10,6 +10,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use DB;
+
+//use App\Http\Controllers\Controller;
 
 /**
  * Class Rating
@@ -37,6 +40,16 @@ class Rating extends Model
     protected $hidden = [
         'rate_id',
     ];
+
+    /**
+     * Function return averaged rating of the Salon
+     * @param $salon_id
+     * return int
+     */
+    public function averagedRate($salon_id)
+    {
+        $rating = DB::table('orders')->max('price');
+    }
 
     function user()
     {
