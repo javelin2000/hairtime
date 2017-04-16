@@ -51,11 +51,23 @@ class CommentController extends BaseController
         ));
         if ($validation->failed())
             return $res->withJson($validation->errors)->withStatus(400);
+        // Check type of User ID, must be int
+        if (gettype($this->gerUserId($req)) == "string") {
+            $user_id = intval($this->gerUserId($req));
+        } elseif (gettype($this->gerUserId($req) == "integer")) {
+            $user_id = $this->gerUserId($req);
+        }
+        // check type of Comment ID, must be int
+        if (gettype($args['comment_id']) == 'string') {
+            $comment = Comment::getUserComment(intval($args['comment_id']), $user_id);
+        } else {
+            $comment = Comment::getUserComment($args['comment_id'], $user_id);
+        }
 
-        $user_id = $this->gerUserId($req);
-        $comment = Comment::getUserComment($args['comment_id'], $user_id);
+
+        //$comment = Comment::getUserComment($args['comment_id'], $user_id); // Both args has string type, but must be int
         if (!$comment)
-            return $res->withStatus(404);
+            return $res->withJson(['error' => "comment not found", 'user_id' => $user_id, 'comment_id' => intval($args['comment_id'])])->withStatus(404);
         $comment->body = $req->getParam('body');
         $comment->save();
         return $res->withStatus(200);
