@@ -25,7 +25,11 @@ $app->group('/auth', function () {
             $this->post('/complete', 'App\Controllers\AuthController:singupWorker');
         });
     });
-
+    $this->group('/edit', function () {
+        $this->post('/customer', 'App\Controllers\AuthController:editCustomer');
+        $this->post('/salon', 'App\Controllers\AuthController:editSalon');
+        $this->post('/worker', 'App\Controllers\AuthController:editWorker');
+    })->add(new AuthChecker());
     $this->get('/confirm_email/{user_id}', 'App\Controllers\AuthController:confirmEmail');
     $this->post('/singin', 'App\Controllers\AuthController:singin');
     $this->post('/singout', 'App\Controllers\AuthController:singout')->add(new AuthChecker());
@@ -41,7 +45,8 @@ $app->group('/service', function () {
             $this->post('', 'App\Controllers\ServiceController:new')->add(new PermissionChecker('salon'));
             $this->put('/{service_id:[0-9]*}', 'App\Controllers\ServiceController:edit')->add(new PermissionChecker('salon'));
             $this->delete('/{service_id:[0-9]*}', 'App\Controllers\ServiceController:delete')->add(new PermissionChecker('salon'));
-            $this->post('/upload/{service_id:[0-9]*}', 'App\Controllers\UploadController:upload')->add(new PermissionChecker('salon'));
+            $this->post('/upload/{service_id:[0-9]*}', 'App\Controllers\UploadController:uploadService')/*->add(new PermissionChecker('salon'))*/
+            ;
         });
     });
     $this->group('/worker', function () {
