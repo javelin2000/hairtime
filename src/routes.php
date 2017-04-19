@@ -41,6 +41,7 @@ $app->group('/service', function () {
             $this->post('', 'App\Controllers\ServiceController:new')->add(new PermissionChecker('salon'));
             $this->put('/{service_id:[0-9]*}', 'App\Controllers\ServiceController:edit')->add(new PermissionChecker('salon'));
             $this->delete('/{service_id:[0-9]*}', 'App\Controllers\ServiceController:delete')->add(new PermissionChecker('salon'));
+            $this->post('/upload/{service_id:[0-9]*}', 'App\Controllers\UploadController:upload')->add(new PermissionChecker('salon'));
         });
     });
     $this->group('/worker', function () {
@@ -54,7 +55,7 @@ $app->group('/service', function () {
 });
 
 $app->group('/salon', function () {
-    $this->group('/service', function () {
+    /*$this->group('/service', function () {
         $this->group('/{salon_id:[0-9]*}', function () {
             $this->post('', 'App\Controllers\ServiceController:new');
             $this->get('', 'App\Controllers\ServiceController:getBySalon');
@@ -62,7 +63,12 @@ $app->group('/salon', function () {
             $this->put('/{service_id:[0-9]*}', 'App\Controllers\ServiceController:edit');
             $this->delete('/{service_id:[0-9]*}', 'App\Controllers\ServiceController:delete');
         });
-    });
+    });*/
+    $this->group('/workers', function () {
+        $this->get('/{salon_id:[0-9]*}', 'App\Controllers\WorkerController:getWorkers');
+        $this->get('/service/{worker_id:[0-9]*}', 'App\Controllers\WorkerController:getWorkersService');
+    })->add(new AuthChecker());
+
     $this->group('/search', function () {
         $this->get('/{lat:[-]?[0-9]{1,3}\,[0-9]{6}}/{lng:[-]?[0-9]{1,3}\,[0-9]{6}}/{radius:[0-9]{2,6}}', 'App\Controllers\SearchController:aroundSearch');
         $this->get('/{city}', 'App\Controllers\SearchController:freeSearch');

@@ -14,7 +14,7 @@ use App\Models\Service_worker;
 use App\Models\ServiceWorker;
 use App\Models\User;
 use App\Models\Worker;
-
+use Illuminate\Support\Facades\DB;
 use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -209,7 +209,6 @@ class ServiceController extends BaseController
         }
 
     }
-
 
     protected function getSalonId(Request $req)
     {
