@@ -29,7 +29,9 @@ $app->group('/auth', function () {
         $this->post('/customer', 'App\Controllers\AuthController:editCustomer');
         $this->post('/salon', 'App\Controllers\AuthController:editSalon');
         $this->post('/worker', 'App\Controllers\AuthController:editWorker');
-    })->add(new AuthChecker());
+    })/*->add(new AuthChecker())*/
+    ;
+
     $this->get('/confirm_email/{user_id}', 'App\Controllers\AuthController:confirmEmail');
     $this->post('/singin', 'App\Controllers\AuthController:singin');
     $this->post('/singout', 'App\Controllers\AuthController:singout')->add(new AuthChecker());
