@@ -40,6 +40,15 @@ $app->group('/auth', function () {
 
 $app->post('/upload', 'App\Controllers\UploadController:uploadFile');
 
+$app->group('/worker', function () {
+    $this->group('/schedule/{worker_id:[0-9]*}', function () {
+        $this->get('', 'App\Controllers\ScheduleController:getSchedule');
+        $this->post('', 'App\Controllers\ScheduleController:newSchedule')->add(new PermissionChecker('worker'))->add(new AuthChecker());
+    });
+    $this->post('/schedules/{worker_id:[0-9]*}', 'App\Controllers\ScheduleController:newJSONSchedule')->add(new PermissionChecker('worker'))->add(new AuthChecker());
+
+});
+
 $app->group('/service', function () {
     $this->group('/salon', function () {
         $this->group('/{salon_id:[0-9]*}', function () {
