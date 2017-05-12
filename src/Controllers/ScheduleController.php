@@ -21,6 +21,9 @@ class ScheduleController extends BaseController
     public function getSchedule(Request $req, Response $res, $args)
     {
         $schedules = Schedule::where('worker_id', $args['worker_id'])->orderBy('day')->orderBy('start')->get();
+        foreach ($schedules as $schedule) {
+
+        }
         return $res->withJson($schedules)->withStatus(200);
     }
 
@@ -65,5 +68,17 @@ class ScheduleController extends BaseController
         $newSchedule = Schedule::create($req->getParams() + ['worker_id' => $args['worker_id']]);
         $newSchedule = $newSchedule->toArray();
         return $res->withJson($newSchedule)->withStatus(201);
+    }
+
+    public function deleteSchedule(Request $req, Response $res, $args)
+    {
+        $schedule = Schedule::where('worker_id', $args['worker_id'])->where('schedule_id', $args['schedule_id'])->first();
+        //return $res->withJson($schedule)->withStatus(201);
+        $result = $schedule->delete();
+        if ($result) {
+            return $res->withJson(['message' => "Successfully deleted", 'error' => ""])->withStatus(201);
+        } else {
+            return $res->withJson(['message' => "Something wrong, NOT deleted", 'error' => ""])->withStatus(400);
+        }
     }
 }

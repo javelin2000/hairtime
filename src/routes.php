@@ -44,6 +44,7 @@ $app->group('/worker', function () {
     $this->group('/schedule/{worker_id:[0-9]*}', function () {
         $this->get('', 'App\Controllers\ScheduleController:getSchedule');
         $this->post('', 'App\Controllers\ScheduleController:newSchedule')->add(new PermissionChecker('worker'))->add(new AuthChecker());
+        $this->delete('/{schedule_id:[0-9]*}', 'App\Controllers\ScheduleController:deleteSchedule')->add(new PermissionChecker('worker'))->add(new AuthChecker());
     });
     $this->post('/schedules/{worker_id:[0-9]*}', 'App\Controllers\ScheduleController:newJSONSchedule')->add(new PermissionChecker('worker'))->add(new AuthChecker());
 

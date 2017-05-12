@@ -15,6 +15,14 @@ use Illuminate\Database\Eloquent\Model;
  * Class Schedule
  * @package App\Models
  * @method
+ * @method static Schedule find(integer $id)
+ * @method static Schedule findOrFail(integer $id)
+ * @method static Schedule where($column, $condition, $special = null)
+ * @method static Schedule having($column, $condition, $special = null)
+ * @method static Schedule first()
+ * @method static Schedule select($statement)
+ * @method static Schedule selectRaw($statement)
+ * @method static Schedule orderBy($column, $order)
  */
 class Schedule extends Model
 {
