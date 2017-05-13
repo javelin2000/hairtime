@@ -20,6 +20,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Comment first()
  * @method static Comment select($statement)
  * @method static Comment selectRaw($statement)
+ * @method static Comment count()
+ * @method static Comment pluck($col)
+ * @method static Comment distinct()
  * @method static Collection get()
  */
 class Comment extends Model

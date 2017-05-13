@@ -16,6 +16,13 @@ $app->get('/', App\Controllers\HomeController::class);
 
 $app->post('/del', 'App\Controllers\AuthController:delUser');
 
+$app->get('/recalccomments', 'App\Controllers\CommentController:recalc');
+
+$app->group('/queue', function () {
+    $this->get('/{worker_id}/{service_id}', 'App\Controllers\QueueController:getQueue');
+    $this->post('/{worker_id}/{service_id}', 'App\Controllers\QueueController:addQueue');
+});
+
 $app->group('/auth', function () {
     $this->group('/singup', function () {
         $this->post('/customer', 'App\Controllers\AuthController:singupCustomer');

@@ -11,6 +11,7 @@ namespace App\Controllers;
 use App\Models\Comment;
 use App\Models\Salon;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Respect\Validation\Validator as v;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -34,7 +35,26 @@ class CommentController extends BaseController
         $comment->customer_id = $customer_id;
         $comment->body = $req->getParam('body');
         $comment->save();
-        return $res->withStatus(201);
+        $salon = Salon::where('salon_id', $salon_id)->first();
+        $salon->comments_number = Comment::where('salon_id', $salon_id)->count();
+        $salon->save();
+        return $res->withJson($comment)->withStatus(201);
+    }
+
+    public function recalc(Request $req, Response $res, $args)
+    {
+        $salon_list = Comment::pluck('salon_id');
+        $salon_list = array_unique($salon_list->toArray());
+        $i = 1;
+        foreach ($salon_list as $key => $value) {
+            $salon = Salon::where('salon_id', $value)->first();
+            $salon->comments_number = Comment::where('salon_id', $value)->count();
+            $salon->save();
+            $result[$i]['salon_id'] = $value;
+            $result[$i]['comments'] = $salon->comments_number;
+            $i++;
+        }
+        return $res->withJson($result)->withStatus(200);
     }
 
     function get(Request $req, Response $res, array $args)
