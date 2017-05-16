@@ -19,8 +19,9 @@ $app->post('/del', 'App\Controllers\AuthController:delUser');
 $app->get('/recalccomments', 'App\Controllers\CommentController:recalc');
 
 $app->group('/queue', function () {
-    $this->get('/{worker_id}/{service_id}', 'App\Controllers\QueueController:getQueue');
+    $this->get('/{worker_id}', 'App\Controllers\QueueController:getQueue');
     $this->post('/{worker_id}/{service_id}', 'App\Controllers\QueueController:addQueue');
+    $this->delete('/{queue_id}', 'App\Controllers\QueueController:deleteQueue');
 });
 
 $app->group('/auth', function () {
@@ -46,6 +47,10 @@ $app->group('/auth', function () {
 });
 
 $app->post('/upload', 'App\Controllers\UploadController:uploadFile');
+
+$app->group('/admin', function () {
+    $this->get('', 'App\Controllers\AdminController:index');
+});
 
 $app->group('/worker', function () {
     $this->group('/schedule/{worker_id:[0-9]*}', function () {
