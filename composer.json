@@ -4,7 +4,9 @@
     "illuminate/database": "5.3.x-dev",
     "doctrine/dbal": "2.6.x-dev",
     "respect/validation": "1.1.9",
-    "phpmailer/phpmailer": "~5.2"
+    "phpmailer/phpmailer": "~5.2",
+    "jenssegers/blade": "^1.1"
+  }
   },
   "autoload": {
     "psr-4": {

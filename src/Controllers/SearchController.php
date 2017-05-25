@@ -19,7 +19,9 @@ class SearchController extends BaseController
     {
         $city = strtolower($req->getAttribute('city'));
         $list = Salon::where('city', 'like', '%' . $city . '%')->get();
-        return $res->withJson($list);
+        $name = Salon::where('business_name', 'like', '%' . $city . '%')->get();
+        $result = $name->toArray() + $list->toArray();
+        return $res->withJson($result);
     }
 
     function aroundSearch(Request $req, Response $res)

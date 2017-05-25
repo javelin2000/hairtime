@@ -32,7 +32,6 @@ class Worker extends Model
     ];
 
     protected $hidden = [
-        'worker_id',
         'created_at',
     ];
 
@@ -49,6 +48,17 @@ class Worker extends Model
     public function user()
     {
         return $this->morphOne('App\Models\User', 'entry');
+    }
+
+    public function schedules()
+    {
+
+        return $this->hasMany('App\models\Schedule');
+    }
+
+    public function getUserID()
+    {
+
     }
 
     public function services()

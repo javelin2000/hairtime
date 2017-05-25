@@ -34,10 +34,7 @@ class RatingController extends BaseController
         if ($new_rating < 1 AND $new_rating > 5) {
             return $res->withJson(["error" => 'rating must be more than 1 and less than 5'])->withStatus(400);
         }
-
-
         $customer_id = $this->getCustomerId($req);
-
         $rating = Rating::where('customer_id', $customer_id)->where('salon_id', $args['salon_id'])->firstOrNew([]);
         $rating->rating = $new_rating;
         $rating->salon_id = $args['salon_id'];
@@ -51,7 +48,9 @@ class RatingController extends BaseController
     {
         $customer_id = $this->getCustomerId($req);
         $rating = Rating::where('customer_id', $customer_id)->where('salon_id', $args['salon_id'])->first();
-        $averaged_rate = Rating::averagedRate($req->getAttribute(['salon_id']));
+        //return $res->withJson(['gdhry'=>$rating])->withStatus(200);
+
+        //$averaged_rate = Rating::averagedRate($req->getAttribute(['salon_id']));
         if ($rating === null)
             return $res->withJson(['rating' => 0])->withStatus(200);
         else

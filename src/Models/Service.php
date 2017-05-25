@@ -11,12 +11,14 @@ namespace App\Models;
 /**
  * Class User
  * @package App\Models
- * @method static User find(integer $id)
- * @method static User findOrFail(integer $id)
- * @method static User where($column, $condition, $special = null)
- * @method static User first()
- * @method static integer count()
- *
+ * @method static Service find(integer $id)
+ * @method static Service findOrFail(integer $id)
+ * @method static Service where($column, $condition, $special = null)
+ * @method static Service first()
+ * @method static Service integer count()
+ * @method static Service join($table, $col1, $rule, $ol2)
+ * @method static Service pluck($col)
+ * @method static Service distinct()
  */
 
 use Illuminate\Database\Eloquent\Model;

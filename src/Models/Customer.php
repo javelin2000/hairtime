@@ -14,7 +14,10 @@ use Illuminate\Database\Eloquent\Model;
  * @package App\Models
  * @method static Customer find(integer $id)
  * @method static Customer where($column, $condition, $special = null)
+ * @method static Customer get()
  * @method static Customer first()
+ * @method static Customer join($table, $col1, $rule, $ol2)
+ *
  */
 class Customer extends Model {
     public $timestamps = false;
@@ -28,13 +31,11 @@ class Customer extends Model {
     ];
 
     protected $hidden = [
-        'customer_id',
+
         'created_at',
     ];
 
     public function user(){
         return $this->morphOne('App\Models\User', 'entry');
     }
-
-
 }

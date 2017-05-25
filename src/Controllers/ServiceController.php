@@ -87,6 +87,7 @@ class ServiceController extends BaseController
         ));
         if ($validation->failed())
             return $res->withJson($validation->errors)->withStatus(400);
+
         $service = Service::where('service_id', $args['service_id'])->first();
         if ($service->salon_id == $args['salon_id']) {
             $service->name = $req->getParam('name');

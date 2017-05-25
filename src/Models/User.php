@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static User where($column, $condition, $special = null)
  * @method static User first()
  * @method static integer count()
+ * @method static User pluck($col)
  */
 class User extends Model
 {
@@ -28,6 +29,10 @@ class User extends Model
         'email',
         'password',
         'confirm_email',
+    ];
+    protected $hidden = [
+
+        'created_at',
     ];
 
     public function entry()

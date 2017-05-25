@@ -42,9 +42,7 @@ class Salon extends Model
         'status',
         'logo'
     ];
-    protected $hidden = [
-        'salon_id'
-    ];
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
@@ -106,7 +104,7 @@ class Salon extends Model
     {
         $formula = "(6371*acos(cos(radians({$lat}))*cos(radians(`lat`))*cos(radians(`lng`)-radians({$lng}))+sin(radians({$lat}))*sin(radians(`lat`)))) AS distance";
         $radius = ($radius + $radius * 0.1) / 1000;
-        return static::selectRaw('*, ' . $formula)->having('distance', '<=', $radius)->orderBy('distance', 'DESC')->get();
+        return static::selectRaw('*, ' . $formula)->having('distance', '<=', $radius)->orderBy('distance')->get();
     }
 
 }

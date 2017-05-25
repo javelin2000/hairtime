@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Queue integer count()
  * @method static Queue pluck($col)
  * @method static Queue table($table)
+ * @method static Queue distinct()
  */
 class Queue extends Model
 {

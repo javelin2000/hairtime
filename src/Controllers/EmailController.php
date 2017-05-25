@@ -26,7 +26,7 @@ class EmailController extends PHPMailer
     var $FromName = 'HairTime'; // from (от) имя
     var $Host = 'hairtime.co.il';
     var $Port = '465';
-    var $SMTPDebug = '0';
+    var $SMTPDebug = '1';
     var $SMTPSecure = 'ssl';
     var $CharSet = "UTF-8";
     var $Username = 'noreply@hairtime.co.il';

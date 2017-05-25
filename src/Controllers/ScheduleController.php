@@ -35,24 +35,21 @@ class ScheduleController extends BaseController
 
     public function newSchedule(Request $req, Response $res, $args)
     {
-        /*$validation = $this->validator;
+        $validation = $this->validator;
         $validation->validate($req, array(
-            'day' => v::notEmpty(),
-            'first_name' => v::noWhitespace()->notEmpty()->length(1, 100),
-            'last_name' => v::noWhitespace()->notEmpty()->length(1, 100),
-            'password' => v::notEmpty()->length(1, 50),
-            'phone' => v::phone(),
-            'logo' => v::optional(v::url()->length(1, 100))
+            'day' => v::notEmpty()->digit()
         ));
         if ($validation->failed()) {
             return $res->withJson($validation->errors)->withStatus(400);
-        }*/
+        }
         $worker = Worker::where('worker_id', $args['worker_id'])->first();
         $schedules = Schedule::where('worker_id', $args['worker_id'])->where('day', $req->getParam('day'))->orderBy('start')->get();
 
         //return $res->withJson($schedules)->withStatus(200);
-        $in_time_start = mktime(explode(':', $req->getParam('start'))[0], explode(':', $req->getParam('start'))[1]);
-        $in_time_stop = mktime(explode(':', $req->getParam('stop'))[0], explode(':', $req->getParam('stop'))[1]);
+        $time = explode(':', $req->getParam('start'));
+        $in_time_start = mktime($time[0] . ':' . $time[1]);
+        $time = explode(':', $req->getParam('stop'));
+        $in_time_stop = mktime($time[0] . ':' . $time[1]);
         //return $res->withJson(['start'=>$in_time_start, 'stop'=> $in_time_stop])->withStatus(200);
         foreach ($schedules as $schedule) {
             $db_time_start = mktime(explode(':', $schedule->start)[0], explode(':', $schedule->start)[1]);

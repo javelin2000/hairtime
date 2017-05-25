@@ -13,8 +13,10 @@ return [
         'db' => [
             'driver' => 'mysql',
             'host' => 'localhost',
-            'username' => 'devacc',
-            'password' => 'passfordev',
+            'username' => 'oshrihairtime_api',
+            'password' => 'tBo1246Mks',
+            /*'username' => 'devacc',
+            'password' => 'passfordev',*/
             'database' => 'oshrihairtime_main',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',

@@ -1,0 +1,22 @@
+{
+  id: 3,
+  service: {
+    id: 14,
+    name: "hair cut",
+    duration: 30
+  },
+  worker: {
+    id: 7,
+    name: "Vasya Pupkin",
+    boss: {
+      id: 17,
+      name:
+    }
+  }
+}
+
+"workers": [
+{
+"salon_id": "11",
+first_name: last_name: specialization: start_year: phone: logo: worker_id: description:
+
