@@ -14,6 +14,7 @@ use App\Models\Salon;
 use App\Models\Token;
 use App\Models\User;
 use App\Models\Worker;
+use duncan3dc\Laravel\BladeInstance;
 use FreakMailer;
 use PHPMailer;
 use phpmailerException;
@@ -34,8 +35,11 @@ class AuthController extends BaseController
 
         $user->confirm_email = true;
         $user->save();
+        $blade = new BladeInstance(__DIR__ . "/../../public/Views", __DIR__ . "/../../public/Views/cache");
 
-        return $res->withJson(['message' => $user, 'error' => "", 'success' => $user_id])->withStatus(200);
+        echo $blade->render("email");
+        return;
+        //return $res->withJson(['message' => $user, 'error' => "", 'success' => $user_id])->withStatus(200);
     }
 
 
@@ -66,27 +70,34 @@ class AuthController extends BaseController
         $mail = new EmailController();
         $user_name = $req->getParam('last_name') . " " . $req->getParam('first_name');
         $mail->AddAddress($req->getParam('email'), $user_name); // Получатель
-        $mail->Subject = htmlspecialchars('Verify your email address, please');  // Тема письма
+        $mail->Subject = htmlspecialchars(' אימות כתובת המייל שלך ב ' . ' /  Verify e-mail address, please');  // Тема письма
         $letter_body = '
 <head>
-<title>Verify e-mail address</title>
+<title>אימות כתובת המייל שלך ב / Verify e-mail address, please</title>
 </head>
 <body>
-<img alt="HairTime" src="https://hairtime.co.il/img/image.jpg" style="float: left; width: 400px; height: 107px;" />
-<br>
-<h1>&nbsp;</h1>
+<img alt="HairTime" src="https://hairtime.co.il/img/image.jpg" style="align-items: center; width: 400px; height: 107px;" />
+<br><br>
 
-<h1>&nbsp;</h1>
+<p align="right"><b>
+ אנו שמחים ומודים לך שנרשמת לאפליקציית HAIR-TIME
+ </b><br><a href="http://hairtime.co.il/auth/confirm_email/' . $confirm . '" title="Go!!!"> כנס\י לקישור</a>
+רק רצינו לוודא שכתובת המייל שלך הוזנה בצורה תקינה. לשם כך אנא 
+ <br>לאחר מכן חשבונך יופעל ותוכל\י להתחיל להשתמש באפליקציה
+ <a href="mailto:admin@hairtime.co.il">admin@hairtime.co.il</a>-כל שאלה ניתן לשלוח מייל לתמיכה שלנו בכתובת </p>
 
-<h2>Dear ' . $user_name . '</h2>
-<p>We invite you to register in HairTime application! We just need to verify your email address:
-<a href="http://hairtime.co.il/auth/confirm_email/' . $confirm . '" title="Go!!!">Verify e-mail</a>
+<p align="right">,בברכה<br>
+  צוות  HAIR-TIME
+ </p>
+<hr>
+<h6><p align="left">We invite you to register in HairTime application! We just need to verify your email address:
+<a href="http://hairtime.co.il/auth/confirm_email/' . $confirm . '" title="Go!!!">Verify e-mail</a><br>
 If you have any issues confirming your email we will be happy to help you. You can contact us on 
 <a href="mailto:admin@hairtime.co.il">admin@hairtime.co.il</a></p>
 
-<p>With best regards, <br /><br>
+<p align="left">With best regards,<br /><br>
 
-The HairTime Team.</p>';
+The HairTime Team.</p></h6>';
         $mail->MsgHTML($letter_body); // Текст сообщения
         $mail->AltBody = "Dear " . $user_name . ", confirm your email, please. Copy next string to your browser and press enter: http://hairtime.co.il/auth/confirm_email/" . $confirm;
         $result = $mail->Send();
@@ -141,10 +152,10 @@ The HairTime Team.</p>';
             'last_name' => v::notEmpty()->noWhitespace()->length(1, 100),
             'business_name' => v::notEmpty()->length(1, 100),
             'founded_in' => v::between(1980, date("Y")),
-            'city' => v::alpha()->length(1, 255),
+            'city' => v::notEmpty()->length(1, 255),
             'address' => v::notEmpty()->length(1, 255),
-            'lat' => v::notEmpty(),
-            'lng' => v::notEmpty(), //TODO: regex validator
+            /*'lat' => v::notEmpty(),
+            'lng' => v::notEmpty(), //TODO: regex validator*/
             'password' => v::notEmpty()->length(1, 50), //TODO: turn off debug mode
             'phone' => v::phone(),
             'logo' => v::optional(v::url()->length(1, 100)),
@@ -170,30 +181,37 @@ The HairTime Team.</p>';
 
         $user_name = $req->getParam('last_name') . " " . $req->getParam('first_name');
         $mail->AddAddress($req->getParam('email'), $user_name); // Получатель
-        $mail->Subject = htmlspecialchars('Verify your email address, please');  // Тема письма
+        $mail->Subject = htmlspecialchars(' אימות כתובת המייל שלך ב ' . ' /  Verify e-mail address, please');  // Тема письма
         $letter_body = '
 <head>
-<title>Verify e-mail address</title>
+<title>אימות כתובת המייל שלך ב / Verify e-mail address, please</title>
 </head>
 <body>
-<img alt="HairTime" src="https://hairtime.co.il/img/image.jpg" style="float: left; width: 400px; height: 107px;" />
-<br>
-<h1>&nbsp;</h1>
+<img alt="HairTime" src="https://hairtime.co.il/img/image.jpg" style="align-items: center; width: 400px; height: 107px;" />
+<br><br>
 
-<h1>&nbsp;</h1>
+<p align="right"><b>
+ אנו שמחים ומודים לך שנרשמת לאפליקציית HAIR-TIME
+ </b><br><a href="http://hairtime.co.il/auth/confirm_email/' . $confirm . '" title="Go!!!"> כנס\י לקישור</a>
+רק רצינו לוודא שכתובת המייל שלך הוזנה בצורה תקינה. לשם כך אנא 
+ <br>לאחר מכן חשבונך יופעל ותוכל\י להתחיל להשתמש באפליקציה
+ <a href="mailto:admin@hairtime.co.il">admin@hairtime.co.il</a>-כל שאלה ניתן לשלוח מייל לתמיכה שלנו בכתובת </p>
 
-<h2>Dear ' . $user_name . '</h2>
-<p>We invite you to register in HairTime application! We just need to verify your email address:
-<a href="http://hairtime.co.il/auth/confirm_email/' . $confirm . '" title="Go!!!">Verify e-mail</a>
+<p align="right">,בברכה<br>
+  צוות  HAIR-TIME
+ </p>
+<hr>
+<h6><p align="left">We invite you to register in HairTime application! We just need to verify your email address:
+<a href="http://hairtime.co.il/auth/confirm_email/' . $confirm . '" title="Go!!!">Verify e-mail</a><br>
 If you have any issues confirming your email we will be happy to help you. You can contact us on 
 <a href="mailto:admin@hairtime.co.il">admin@hairtime.co.il</a></p>
 
-<p>With best regards, <br /><br>
+<p align="left">With best regards,<br /><br>
 
-The HairTime Team.</p>';
+The HairTime Team.</p></h6>';
 
         $mail->MsgHTML($letter_body); // Текст сообщения
-        $mail->AltBody = "Dear " . $user_name . ", confirm your email, please. Copy next string to your browser and press enter: http://hairtime.co.il/auth/confirm_email/" . $confirm;
+        $mail->AltBody = "Confirm your email, please. Copy next string to your browser and press enter: http://hairtime.co.il/auth/confirm_email/" . $confirm;
         $result = $mail->Send();
 
         if ($result) {
@@ -284,7 +302,7 @@ The HairTime Team.</p>';
 <title>Download HairTime application and register</title>
 </head>
 <body>
-<img alt="HairTime" src="https://hairtime.co.il/img/image.jpg" style="float: left; width: 400px; height: 107px;" />
+<img alt="HairTime" src="https://hairtime.co.il/img/image.jpg" style="float: right; align-items:right; width: 400px; height: 107px;" />
 <br>
 <h1>&nbsp;</h1>
 
