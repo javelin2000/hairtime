@@ -99,7 +99,8 @@ class CommentController extends BaseController
         $comment = Comment::getUserComment($args['comment_id'], $user_id);
         if (!$comment)
             return $res->withStatus(404);
-        $comment->delete();
+        $comment->del = true;
+        $comment->save();
         return $res->withStatus(200);
     }
 

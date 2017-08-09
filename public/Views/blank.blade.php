@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.template')
 @section('content')
     <div id="page-wrapper">
         <div class="row">

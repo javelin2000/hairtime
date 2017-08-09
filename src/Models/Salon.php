@@ -90,7 +90,7 @@ class Salon extends Model
      */
     public function commentsWithCustomerInfo()
     {
-        return $this->comments()->join('customers', 'comments.customer_id', '=', 'customers.customer_id')->get(['comments.*', 'logo', 'first_name', 'last_name']);
+        return $this->comments()->join('customers', 'comments.customer_id', '=', 'customers.customer_id')->where('del', false)->get(['comments.*', 'logo', 'first_name', 'last_name']);
     }
     
 

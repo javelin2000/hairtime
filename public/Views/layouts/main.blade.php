@@ -14,11 +14,42 @@
     <link href="/css/style.css" rel="stylesheet"/>
     <link href="/css/main-style.css" rel="stylesheet"/>
     <!-- Page-Level CSS -->
+    <style>
+        th {
+            cursor: pointer;
+        }
+
+        th:hover {
+            background: dimgray;
+        }
+    </style>
 
 </head>
 
 <body>
-@yield('login')
+<!--  wrapper -->
+<div id="wrapper">
+    <!-- navbar top -->
+@include('layouts.head')
+<!-- end navbar top -->
+
+    <!-- navbar side -->
+@include('layouts.side')
+<!-- end navbar side -->
+    <!--  page-wrapper -->
+    <div id="page-wrapper">
+
+        <div class="row">
+            <!-- Page Header -->
+            <div class="col-lg-12">
+                @yield('content')
+            </div>
+            <!--End Page Header -->
+        </div>
+    </div>
+    <!-- end page-wrapper -->
+</div>
+<!-- end wrapper -->
 
 <!-- Core Scripts - Include with every page -->
 <script src="/plugins/jquery-1.10.2.js"></script>

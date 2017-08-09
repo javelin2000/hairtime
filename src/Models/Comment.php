@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Comment count()
  * @method static Comment pluck($col)
  * @method static Comment distinct()
+ * @method static Comment take($num)
+ * @method static Comment orderBy($col, $operator)
  * @method static Collection get()
  */
 class Comment extends Model

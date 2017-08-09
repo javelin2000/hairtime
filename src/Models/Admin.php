@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Admin join($table, $col1, $rule, $ol2)
  * @method static Admin orderBy($column, $order)
  * @method static Admin first()
+ * @method static Admin paginate($num)
  * @method static Admin integer count()
  */
 class Admin extends Model
@@ -31,6 +32,9 @@ class Admin extends Model
         'user_id',
         'login',
         'password',
+        'first_name',
+        'last_name',
+        'email',
         'status',
         'created_at',
     ];

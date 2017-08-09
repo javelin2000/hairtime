@@ -264,6 +264,54 @@ The HairTime Team.</p></h6>';
 
     }
 
+    public function forgotPassword(Request $req, Response $res)
+    {
+        if (User::where('email', $req->getParam('email'))->count() > 0) {
+            $user = User::where('email', $req->getParam('email'))->first();
+            $chars = "qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
+            $max = 8;
+            $password = null;
+            while ($max--)
+                $password .= $chars[rand(0, 61)];
+            $user->password = $password;
+            $user->save();
+
+            $mail = new EmailController();
+
+            $user_name = $user->last_name . " " . $user->first_name;
+            $mail->AddAddress($req->getParam('email'), $user_name); // Получатель
+            $mail->Subject = htmlspecialchars('New password for HairTime application');  // Тема письма
+            $letter_body = '
+<head>
+<title>New password for HairTime application</title>
+</head>
+<body>
+<img alt="HairTime" src="https://hairtime.co.il/img/image.jpg" style="float: right; align-items:right; width: 400px; height: 107px;" />
+<br>
+<h1>&nbsp;</h1>
+
+<h1>&nbsp;</h1>
+
+<h2>Dear ' . $user_name . ',</h2>
+<p>temporary password for your account in HairTime application is: <b>' . $password . '</b></p>
+Please, login in your application and change this temporary password!
+<br><br>
+If you have any issues confirming your email we will be happy to help you. You can contact us on 
+<a href="mailto:admin@hairtime.co.il">admin@hairtime.co.il</a></p><br>
+
+<p>With best regards, <br /><br>
+
+The HairTime Team.</p>';
+
+            $mail->MsgHTML($letter_body); // Текст сообщения
+            $mail->AltBody = "Dear " . $user_name . ", temporary password for your account in HairTime application is: " . $password;
+            $result = $mail->Send();
+            return $res->withJson(['message' => "New temporary password sent to e-mail ", 'error' => ""])->withStatus(200);
+        }
+        return $res->withJson(['message' => "User not found", 'error' => "404"])->withStatus(404);
+
+    }
+
     public function startWorker(Request $req, Response $res)
     {
         $validation = $this->validator;
@@ -341,7 +389,7 @@ The HairTime Team.</p>';
             'email' => v::notEmpty()->email()->length(5, 255),
             'first_name' => v::noWhitespace()->notEmpty()->length(1, 100),
             'last_name' => v::noWhitespace()->notEmpty()->length(1, 100),
-            'specialization' => v::noWhitespace()->notEmpty()->length(1, 100),
+            'specialization' => v::notEmpty()->length(1, 100),
             'start_year' => v::between(1980, date("Y")),
             'password' => v::notEmpty()->length(1, 50), //TODO: turn off debug mode
             //'salon_id' => v::notEmpty(),

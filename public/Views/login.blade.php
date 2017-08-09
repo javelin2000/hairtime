@@ -1,21 +1,6 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.template')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootsrtap Free Admin Template - SIMINTA | Admin Dashboad Template</title>
-    <!-- Core CSS - Include with every page -->
-    <link href="/plugins/bootstrap/bootstrap.css" rel="stylesheet"/>
-    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet"/>
-    <link href="/plugins/pace/pace-theme-big-counter.css" rel="stylesheet"/>
-    <link href="/css/style.css" rel="stylesheet"/>
-    <link href="/css/main-style.css" rel="stylesheet"/>
-
-</head>
-
-<body class="body-Login-back">
-
+@section('login')
 <div class="container">
 
     <div class="row">
@@ -28,7 +13,7 @@
                     <h3 class="panel-title">Please Sign In</h3>
                 </div>
                 <div class="panel-body">
-                    <form role="form" method="post" action="admin">
+                    <form method="post" action="/admin/login">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="login" name="login" type="text" autofocus>
@@ -42,11 +27,12 @@
                                     <input name="remember" type="checkbox" value="Remember Me">Remember Me
                                 </label>
                                 <label style="align-items:right">
-                                    <a href="admin/fogot">Forgot password...</a>
+                                    <a href="/admin/fogot">Forgot password...</a>
                                 </label>
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
-                            <a class="btn btn-lg btn-success btn-block">Login</a>
+                            <input type="submit" class="btn btn-lg btn-success btn-block" value="Войти" name="log_in"/>
+                            <!-- <a class="btn btn-lg btn-success btn-block" type="submit" name="log_in"  >Login</a> -->
                         </fieldset>
                     </form>
                 </div>
@@ -54,12 +40,4 @@
         </div>
     </div>
 </div>
-
-<!-- Core Scripts - Include with every page -->
-<script src="/plugins/jquery-1.10.2.js"></script>
-<script src="/plugins/bootstrap/bootstrap.min.js"></script>
-<script src="/plugins/metisMenu/jquery.metisMenu.js"></script>
-
-</body>
-
-</html>
+@stop
