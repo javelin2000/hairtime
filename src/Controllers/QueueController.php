@@ -89,6 +89,15 @@ class QueueController
             }
             $i++;
         }
+        if ($result == null) {
+            $result ['customer'] = [
+                "customer_id" => null,
+                "first_name" => null,
+                "last_name" => null,
+                "phone" => null,
+                "logo" => null
+            ];
+        }
         return $res->withJson($result)->withStatus(200);
     }
 
@@ -150,6 +159,28 @@ class QueueController
             }
 
         }
+        if ($result == null) {
+            $result = Salon::where('salon_id', '')->get;
+            $result ['salons'] = [
+                "salon_id" => null,
+                "first_name" => null,
+                "last_name" => null,
+                "business_name" => null,
+                "founded_in" => null,
+                "staff_number" => null,
+                "rating" => null,
+                "comments_number" => null,
+                "phone" => null,
+                "city" => null,
+                "address" => null,
+                "house" => null,
+                "lat" => null,
+                "lng" => null,
+                "waze" => null,
+                "logo" => null,
+                "status" => null,
+            ];
+        }
         return $res->withJson($result)->withStatus(200);
 
     }
@@ -162,6 +193,22 @@ class QueueController
         $queue = Queue::join('services', 'services.service_id', '=', 'queue.service_id')->
         where('worker_id', $args['worker_id'])->where('time', '>', $from)->
         where('time', '<', $to)->orderBy('time')->get();
+        if (sizeof($queue) == 0) {
+            $queue = [
+                "queue_id" => null,
+                "service_id" => null,
+                "worker_id" => null,
+                "customer_id" => null,
+                "status" => null,
+                "time" => null,
+                "salon_id" => null,
+                "name" => null,
+                "duration" => null,
+                "price_min" => null,
+                "price_max" => null,
+                "logo" => null
+            ];
+        }
         return $res->withJson($queue)->withStatus(200);
 
         /*$schedules = Schedule::where('worker_id', $args['worker_id'])->select('day')->distinct()->get();
