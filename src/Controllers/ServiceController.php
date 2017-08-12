@@ -71,6 +71,19 @@ class ServiceController extends BaseController
         } else {
             return $res->withJson(['message' => "Salon with such salon_id is not found. Check salon_id.", 'error' => "404"])->withStatus(404);
         }
+        if ($result == null) {
+            $result = [
+                "service_id" => null,
+                "salon_id" => null,
+                "name" => null,
+                "duration" => null,
+                "price_min" => null,
+                "price_max" => null,
+                "created_at" => null,
+                "logo" => null,
+                "workers" => null,
+            ];
+        }
         return $res->withJson($result)->withStatus(200);
 
 
