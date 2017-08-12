@@ -27,11 +27,11 @@ class User extends Model
     protected $primaryKey = 'user_id';
     protected $fillable = [
         'email',
-        'password',
         'confirm_email',
     ];
     protected $hidden = [
 
+        'password',
         'created_at',
     ];
 

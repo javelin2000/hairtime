@@ -336,6 +336,7 @@ The HairTime Team.</p>';
         while ($max--)
             $password .= $chars[rand(0, 61)];
         $user->password = $password;
+        $user->confirm_email = true;
         $user->save();
 
         //$confirm = $user->user_id;
@@ -402,6 +403,9 @@ The HairTime Team.</p>';
 
         $token = $this->makeToken();
         $user = User::where('email', $req->getParam('email'))->first();
+        if ($user == null) {
+            return $res->withJson(['message' => 'User with this email not found', 'error' => '404'])->withStatus(404);
+        }
         $user->confirm_email = true;
         $user->password = $req->getParam('password');
         $user->save();
@@ -414,7 +418,7 @@ The HairTime Team.</p>';
         $worker->phone = $req->getParam('phone');
         $worker->logo = $req->getParam('logo');
         $worker->save();
-        return $res->withJson($worker->toArray() + ['user_id' => $user->user_id, 'token' => $token])->withStatus(201);
+        return $res->withJson($worker->toArray() + $user->toArray())->withStatus(201);
 
     }
 
@@ -425,7 +429,7 @@ The HairTime Team.</p>';
             'email' => v::notEmpty()->email()->length(5, 255),
             'first_name' => v::noWhitespace()->notEmpty()->length(1, 100),
             'last_name' => v::noWhitespace()->notEmpty()->length(1, 100),
-            'specialization' => v::noWhitespace()->notEmpty()->length(1, 100),
+            'specialization' => v::notEmpty()->length(1, 100),
             'start_year' => v::between(1980, date("Y")),
             'password' => v::notEmpty()->length(1, 50),
             //'salon_id' => v::notEmpty(),
@@ -448,7 +452,7 @@ The HairTime Team.</p>';
         //$user->tokens()->create(['token' => $token]);
         //$user->save();
 
-        return $res->withJson($worker->toArray() + ['user_id' => $user->user_id])->withStatus(201);
+        return $res->withJson($worker)->withStatus(201);
 
     }
 
