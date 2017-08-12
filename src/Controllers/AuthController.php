@@ -267,10 +267,10 @@ The HairTime Team.</p></h6>';
 
     }
 
-    public function forgotPassword(Request $req, Response $res)
+    public function forgotPassword(Request $req, Response $res, $args)
     {
-        if (User::where('email', $req->getParam('email'))->count() > 0) {
-            $user = User::where('email', $req->getParam('email'))->first();
+        if (User::where('email', $args['email'])->count() > 0) {
+            $user = User::where('email', $args['email'])->first();
             $chars = "qazxswedcvfrtgbnhyujmkiolp1234567890QAZXSWEDCVFRTGBNHYUJMKIOLP";
             $max = 8;
             $password = null;
@@ -282,7 +282,7 @@ The HairTime Team.</p></h6>';
             $mail = new EmailController();
 
             $user_name = $user->last_name . " " . $user->first_name;
-            $mail->AddAddress($req->getParam('email'), $user_name); // Получатель
+            $mail->AddAddress($args['email'], $user_name); // Получатель
             $mail->Subject = htmlspecialchars('New password for HairTime application');  // Тема письма
             $letter_body = '
 <head>
@@ -309,7 +309,11 @@ The HairTime Team.</p>';
             $mail->MsgHTML($letter_body); // Текст сообщения
             $mail->AltBody = "Dear " . $user_name . ", temporary password for your account in HairTime application is: " . $password;
             $result = $mail->Send();
-            return $res->withJson(['message' => "New temporary password sent to e-mail ", 'error' => ""])->withStatus(200);
+            if ($result) {
+                return $res->withJson(['message' => "New temporary password sent to e-mail ", 'error' => null])->withStatus(200);
+            } else {
+                return $res->withJson(['message' => "Something wrong. Pasword don't sent.", 'error' => '520'])->withStatus(520);
+            }
         }
         return $res->withJson(['message' => "User not found", 'error' => "404"])->withStatus(404);
 

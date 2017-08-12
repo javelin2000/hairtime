@@ -69,6 +69,8 @@ The HairTime Team.</p>';
 
 $app->get('/recalccomments', 'App\Controllers\CommentController:recalc');
 
+$app->get('/forgot_password/{email}', 'App\Controllers\AuthController:forgotPassword');
+
 $app->group('/queue', function () {
     $this->get('/worker/{worker_id}', 'App\Controllers\QueueController:getQueue');
     $this->get('/salon/{salon_id}', 'App\Controllers\QueueController:getSalonQueue');
