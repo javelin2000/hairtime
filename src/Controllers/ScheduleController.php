@@ -21,8 +21,14 @@ class ScheduleController extends BaseController
     public function getSchedule(Request $req, Response $res, $args)
     {
         $schedules = Schedule::where('worker_id', $args['worker_id'])->orderBy('day')->orderBy('start')->get();
-        foreach ($schedules as $schedule) {
-
+        if (sizeof($schedules) == 0) {
+            $schedules = [
+                "schedule_id" => null,
+                "worker_id" => null,
+                "day" => null,
+                "start" => null,
+                "stop" => null
+            ];
         }
         return $res->withJson($schedules)->withStatus(200);
     }
