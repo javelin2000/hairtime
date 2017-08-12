@@ -154,6 +154,7 @@ The HairTime Team.</p></h6>';
             'founded_in' => v::between(1980, date("Y")),
             'city' => v::notEmpty()->length(1, 255),
             'address' => v::notEmpty()->length(1, 255),
+            'house' => v::notEmpty()->length(1, 10),
             /*'lat' => v::notEmpty(),
             'lng' => v::notEmpty(), //TODO: regex validator*/
             'password' => v::notEmpty()->length(1, 50), //TODO: turn off debug mode
@@ -236,8 +237,9 @@ The HairTime Team.</p></h6>';
             'founded_in' => v::between(1980, date("Y")),
             'city' => v::alpha()->length(1, 255),
             'address' => v::notEmpty()->length(1, 255),
-            'lat' => v::notEmpty(),
-            'lng' => v::notEmpty(),
+            'house' => v::notEmpty()->length(1, 10),
+            //'lat' => v::notEmpty(),
+            //'lng' => v::notEmpty(),
             'password' => v::notEmpty()->length(1, 50),
             'phone' => v::phone(),
             'logo' => v::optional(v::url()->length(1, 100)),
@@ -256,6 +258,7 @@ The HairTime Team.</p></h6>';
         $salon->business_name = $req->getParam('business_name');
         $salon->founded_in = $req->getParam('founded_in');
         $salon->address = $req->getParam('address');
+        $salon->house = $req->getParam('house');
         $salon->lat = $req->getParam('lat');
         $salon->lng = $req->getParam('lng');
         $salon->phone = $req->getParam('phone');

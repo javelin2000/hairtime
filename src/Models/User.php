@@ -28,10 +28,10 @@ class User extends Model
     protected $fillable = [
         'email',
         'confirm_email',
+        'password',
     ];
     protected $hidden = [
 
-        'password',
         'created_at',
     ];
 

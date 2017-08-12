@@ -36,6 +36,7 @@ class Salon extends Model
         'founded_in',
         'city',
         'address',
+        'house',
         'lat',
         'lng',
         'phone',
