@@ -60,7 +60,19 @@ class CommentController extends BaseController
     function get(Request $req, Response $res, array $args)
     {
         $salon = Salon::find($args['salon_id']);
-        return $res->withJson($salon->commentsWithCustomerInfo());
+        $commets = $salon->commentsWithCustomerInfo();
+        if (sizeof($commets) == 0) {
+            $commets = [
+                'customer_id' => null,
+                'salon_id' => null,
+                "body" => null,
+                "created_at" => null,
+                "logo" => null,
+                "first_name" => null,
+                "last_name" => null
+            ];
+        }
+        return $res->withJson($commets)->withStatus(200);
     }
 
     function edit(Request $req, Response $res, $args)

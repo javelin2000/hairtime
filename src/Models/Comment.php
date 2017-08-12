@@ -38,6 +38,8 @@ class Comment extends Model
         'body'
     ];
     protected $hidden = [
+
+        'del',
         'comment_id',
     ];
 

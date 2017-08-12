@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Salon where($column, $condition, $special = null)
  * @method static Salon having($column, $condition, $special = null)
  * @method static Salon first()
+ * @method static Salon count()
  * @method static Salon select($statement)
  * @method static Salon selectRaw($statement)
  * @method static Salon orderBy($column, $order)

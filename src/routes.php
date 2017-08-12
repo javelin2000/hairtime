@@ -194,7 +194,8 @@ $app->group('/salon', function () {
             $this->get('', 'App\Controllers\CommentController:get');
             $this->put('/{comment_id:[0-9]*}', 'App\Controllers\CommentController:edit');
             $this->delete('/{comment_id:[0-9]*}', 'App\Controllers\CommentController:delete');
-        })->add(new PermissionChecker('customer'));
+        })/*->add(new PermissionChecker('customer'))*/
+        ;
     })->add(new SalonChecker());
 })/*->add(new AuthChecker())->add(new PermissionChecker('customer'))*/
 ;
