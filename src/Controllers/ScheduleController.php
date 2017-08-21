@@ -22,7 +22,7 @@ class ScheduleController extends BaseController
     {
         $schedules = Schedule::where('worker_id', $args['worker_id'])->orderBy('day')->orderBy('start')->get();
         if (sizeof($schedules) == 0) {
-            $schedules = [
+            $schedules[] = [
                 "schedule_id" => null,
                 "worker_id" => null,
                 "day" => null,

@@ -90,13 +90,14 @@ class QueueController
             $i++;
         }
         if ($result == null) {
-            $result ['customer'] = [
+            $result1 ['customer'] = [
                 "customer_id" => null,
                 "first_name" => null,
                 "last_name" => null,
                 "phone" => null,
                 "logo" => null
             ];
+            $result = [$result1];
         }
         return $res->withJson($result)->withStatus(200);
     }
@@ -159,9 +160,9 @@ class QueueController
             }
 
         }
-        if ($result == null) {
-            $result = Salon::where('salon_id', '')->get;
-            $result ['salons'] = [
+        if (sizeof($result) == 0) {
+            //$result = Salon::where('salon_id', '')->get;
+            $result1 ['salons'] = [
                 "salon_id" => null,
                 "first_name" => null,
                 "last_name" => null,
@@ -180,6 +181,7 @@ class QueueController
                 "logo" => null,
                 "status" => null,
             ];
+            $result = [$result1];
         }
         return $res->withJson($result)->withStatus(200);
 
@@ -194,7 +196,7 @@ class QueueController
         where('worker_id', $args['worker_id'])->where('time', '>', $from)->
         where('time', '<', $to)->orderBy('time')->get();
         if (sizeof($queue) == 0) {
-            $queue = [
+            $queue[] = [
                 "queue_id" => null,
                 "service_id" => null,
                 "worker_id" => null,
