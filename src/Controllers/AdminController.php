@@ -12,6 +12,7 @@ namespace App\Controllers;
 
 use App\Models\Admin;
 use App\Models\Comment;
+use App\Models\Message;
 use App\Models\Salon;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -30,6 +31,23 @@ class AdminController
         $user = User::where('login', $req->getParam('login'))->first();
         if (isset($user)) {
 
+        }
+
+    }
+
+    public function message(Request $req, Response $res)
+    {
+        $user = User::where('email', $req->getParam('email'))->first();
+        if ($user != null) {
+            $message = new Message();
+            $message->user_id = $user->user_id;
+            $message->message = $req->getParam('message');
+            $message->name = $req->getParam('name');
+            $message->save();
+
+            return $res->withJson($message)->withStatus(200);
+        } else {
+            return $res->withJson(['message' => "User with this e-mail does't found.", 'error' => "404"])->withStatus(404);
         }
 
     }
@@ -72,7 +90,10 @@ class AdminController
                 //return $res->withJson($req->getParams())->withStatus(200);
             }
             $comments = Comment::orderBy('created_at', 'desc')->where('del', false)->take(10)->get();
-            echo $blade->render("comments", ['comments' => $comments, 'menu' => 'comments', 'admin' => $admin, 'vis' => 'visible']);
+            $messages = Message::where('answer_at', '=', null)->get();
+            $messages_count = Message::where('answer_at', '=', null)->count();
+            echo $blade->render("comments", ['comments' => $comments, 'menu' => 'comments', 'admin' => $admin,
+                'vis' => 'visible', 'messages' => $messages, 'messages_count' => $messages_count]);
             return;
         } else {
             echo $blade->render("login");
@@ -215,9 +236,12 @@ class AdminController
             $method = $req->getMethod();
             $admin = $admin->toArray();
             //return $res->withJson($salons->toArray())->withStatus(200);
+            $messages = Message::where('answer_at', '=', null)->get();
+            $messages_count = Message::where('answer_at', '=', null)->count();
 
             echo $blade->render("index", ['admin' => $admin, 'method' => $method, 'salons' => $salons->toArray(),
-                'req' => $req->getParams(), 'menu' => 'salons']);
+                'req' => $req->getParams(), 'menu' => 'salons',
+                'messages' => $messages, 'messages_count' => $messages_count]);
             return;
         } else {
             echo $blade->render("login");

@@ -45,6 +45,11 @@ class User extends Model
         return $this->hasMany('App\Models\Comment');
     }
 
+    public function messages()
+    {
+        return $this->hasMany('App\Models\Message');
+    }
+
     public function ratings()
     {
         return $this->hasMany('App\Models\Rating');
