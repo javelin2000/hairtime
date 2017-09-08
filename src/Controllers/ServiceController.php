@@ -82,7 +82,7 @@ class ServiceController extends BaseController
                 "created_at" => null,
                 "logo" => null,
             ];
-            $result1["workers"] = [
+            $result2 = [
                 "worker_id" => null,
                 "salon_id" => null,
                 "first_name" => null,
@@ -93,6 +93,8 @@ class ServiceController extends BaseController
                 "logo" => null,
                 "description" => null,
             ];
+
+            $result1["worker"] = [$result2];
             $result = [$result1];
         }
         return $res->withJson($result)->withStatus(200);

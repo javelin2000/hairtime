@@ -14,12 +14,13 @@ class Message extends Model
 {
     public $timestamps = false;
     protected $table = 'messages';
-    protected $primaryKey = 'messages_id';
+    protected $primaryKey = 'message_id';
     protected $fillable = [
         'used_id',
         'message',
-        'created_at',
+        'create_at',
         'answer_at',
+        'delete_at',
     ];
 
     protected $hidden = [
@@ -27,8 +28,14 @@ class Message extends Model
 
     ];
 
+
+    public function answer()
+    {
+        return $this->hasMany('App\Models\Answer');
+    }
+
     public function user()
     {
-        return $this->morphOne('App\Models\User', 'entry');
+        return $this->belongsTo('App\Models\User');
     }
 }

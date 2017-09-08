@@ -19,8 +19,15 @@
                 </div>
                 <!--end user image section-->
             </li>
+
             <li @if ($menu=='salons') class="selected" @endif>
                 <a href="/admin"><i class="fa fa-list fa-fw"></i>Salon's list</a>
+            </li>
+            <li @if ($menu=='workers') class="selected" @endif>
+                <a href="/admin"><i class="fa fa-scissors fa-fw"></i>Worker's list</a>
+            </li>
+            <li @if ($menu=='customers') class="selected" @endif>
+                <a href="/admin"><i class="fa fa-list fa-fw"></i>Customer's list</a>
             </li>
             <li @if ($menu=='comments') class="selected" @endif>
                 <a href="/admin/comments"><i class="fa fa-comment fa-fw"></i>Comments</a>

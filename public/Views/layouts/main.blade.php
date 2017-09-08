@@ -8,6 +8,7 @@
     <title>HairTime | Admin Panel</title>
     <link href="/plugins/bootstrap/bootstrap.css" rel="stylesheet"/>
 
+
     <link href="/font-awesome/css/font-awesome.css" rel="stylesheet"/>
     <!--
     <link href="/plugins/pace/pace-theme-big-counter.css" rel="stylesheet" />-->

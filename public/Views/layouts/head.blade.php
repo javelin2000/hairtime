@@ -17,28 +17,28 @@
         <!-- main dropdown -->
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                <span class="top-label label label-danger">{{$messages_count}}</span><i
+                <span class="top-label label label-danger">@if(count($messages)>0){{count($messages)}}@endif</span><i
                         class="fa fa-envelope fa-3x"></i>
             </a>
             <!-- dropdown-messages -->
             <ul class="dropdown-menu dropdown-messages">
                 @foreach($messages as $message)
                     <li>
-                        <a href="#">
+                        <a href="https://hairtime.co.il/admin/message/{{$message['message_id']}}?operator=Answer">
                             <div>
                                 <strong><span class=" label label-danger">{{$message->name}}</span></strong>
                                 <span class="pull-right text-muted">
-                                        <em>{{$message->created_at}}</em>
+                                        <em>{{$message->create_at}}</em>
                                     </span>
                             </div>
-                            <div>{{substr($message->message, 1, 25)}}</div>
+                            <div>{{substr($message->message, 0, 25)}}</div>
                         </a>
                     </li>
                     <li class="divider"></li>
 
                 @endforeach
                 <li>
-                    <a class="text-center" href="#">
+                    <a class="text-center" href="/admin/message">
                         <strong>Read All Messages</strong>
                         <i class="fa fa-angle-right"></i>
                     </a>

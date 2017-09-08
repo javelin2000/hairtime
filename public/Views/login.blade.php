@@ -1,6 +1,15 @@
 @extends('layouts.template')
 
 @section('login')
+    <style>
+        p {
+            text-align: center;
+            margin-top: 5px;
+            padding-bottom-bottom: 10px;
+            font-weight: 600;
+            color: darkred;
+        }
+    </style>
 <div class="container">
 
     <div class="row">
@@ -15,6 +24,9 @@
                 <div class="panel-body">
                     <form method="post" action="/admin/login">
                         <fieldset>
+                            @if(isset($error))
+                                <p>{{$error}}</p>
+                            @endif
                             <div class="form-group">
                                 <input class="form-control" placeholder="login" name="login" type="text" autofocus>
                             </div>
@@ -31,7 +43,7 @@
                                 </label>
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
-                            <input type="submit" class="btn btn-lg btn-success btn-block" value="Войти" name="log_in"/>
+                            <input type="submit" class="btn btn-lg btn-success btn-block" value="Login" name="log_in"/>
                             <!-- <a class="btn btn-lg btn-success btn-block" type="submit" name="log_in"  >Login</a> -->
                         </fieldset>
                     </form>

@@ -9,7 +9,8 @@ namespace App\Controllers;
 
 use Slim\Container;
 
-class BaseController {
+class BaseController
+{
     protected $ci;
 
     public function __construct(Container $ci)

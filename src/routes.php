@@ -74,7 +74,11 @@ $app->post('/upload', 'App\Controllers\UploadController:uploadFile');
 
 $app->group('/admin', function () {
     $this->any('', 'App\Controllers\AdminController:salons');
-    $this->post('/message', 'App\Controllers\AdminController:message');
+    $this->group('/message', function () {
+        $this->post('', 'App\Controllers\AdminController:message');
+        $this->get('', 'App\Controllers\AdminController:getAllMessage');
+        $this->any('/{message_id:[0-9]*}', 'App\Controllers\AdminController:workWithMessage');
+    });
     $this->post('/login', 'App\Controllers\AdminController:login');
     $this->get('/logout', 'App\Controllers\AdminController:logout');
     $this->post('/salon/{salon_id}', 'App\Controllers\AdminController:edit');
